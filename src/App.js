@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
+import CounterContainer from "./components/App/CounterContainer/CounterContainer";
+import ErrorOverlay from "./components/App/ErrorOverlay/ErrorOverlay";
 
-const client = new W3CWebSocket("ws://127.0.0.1:3001");
+const client = new W3CWebSocket("ws://192.168.1.191:3001");
 
 const App = () => {
   const [counter, setCounter] = useState(0);
+  //const [hasError, setHasError] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     client.onopen = () => {
       console.log("WebSocket Clinet Connected");
+      client.send(JSON.stringify({ type: "initialHandshake" }));
+      setIsConnected(true);
     };
+
+    client.onerror = () => {
+      //setHasError(true);
+    };
+
     client.onmessage = message => {
-      console.log(message)
       const dataFromServer = JSON.parse(message.data);
-      
       if (dataFromServer.type === "counterChange") {
         setCounter(dataFromServer.data.counter);
       }
@@ -31,7 +40,7 @@ const App = () => {
   const onDecrement = () => {
     const newCounter = counter - 1;
     setCounter(newCounter);
-    client.send(JSON.stringify({ type: "counterChange",  counter: newCounter }));
+    client.send(JSON.stringify({ type: "counterChange", counter: newCounter }));
     console.log("Decremented");
   };
 
@@ -40,17 +49,15 @@ const App = () => {
       <header className="App-header">
         <p>Socket Counter</p>
       </header>
-      <section className="App-body">
-        <div className="Counter">{counter}</div>
-        <div className="Counter-button-container">
-          <button onClick={onIncrement} className="Counter-button">
-            Increment
-          </button>
-          <button onClick={onDecrement} className="Counter-button">
-            Decrement
-          </button>
-        </div>
-      </section>
+      {!isConnected ? (
+        <ErrorOverlay />
+      ) : (
+        <CounterContainer
+          onIncrement={onIncrement}
+          onDecrement={onDecrement}
+          counter={counter}
+        />
+      )}
     </div>
   );
 };
