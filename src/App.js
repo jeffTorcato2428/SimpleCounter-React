@@ -4,13 +4,18 @@ import "./App.css";
 import CounterContainer from "./components/App/CounterContainer/CounterContainer";
 import ErrorOverlay from "./components/App/ErrorOverlay/ErrorOverlay";
 
-const client = io.connect("http://192.168.1.191:3001");
+const serverURI =
+  window.location.hostname === "localhost"
+    ? "http://localhost:3001"
+    : "http://192.168.1.191:3001";
+
+const client = io.connect(serverURI);
 
 const App = () => {
   const [counter, setCounter] = useState(0);
   //const [hasError, setHasError] = useState(false);
   const [isConnected, setIsConnected] = useState(true);
-  const [someCount, setSomeCount] = useState(0);
+  //const [someCount, setSomeCount] = useState(0);
 
   useEffect(() => {
     client.on("socket connection", data => {
