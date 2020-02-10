@@ -1,46 +1,40 @@
 import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
 import "./App.css";
-import { w3cwebsocket as W3CWebSocket } from "websocket";
 import CounterContainer from "./components/App/CounterContainer/CounterContainer";
 import ErrorOverlay from "./components/App/ErrorOverlay/ErrorOverlay";
 
-const client = new W3CWebSocket("ws://192.168.1.191:3001");
+const client = io.connect("http://192.168.1.191:3001");
 
 const App = () => {
   const [counter, setCounter] = useState(0);
   //const [hasError, setHasError] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
+  const [someCount, setSomeCount] = useState(0);
 
   useEffect(() => {
-    client.onopen = () => {
-      console.log("WebSocket Clinet Connected");
-      client.send(JSON.stringify({ type: "initialHandshake" }));
+    client.on("socket connection", data => {
+      console.log("Socket Connected");
       setIsConnected(true);
-    };
+      setCounter(data.counter);
+    });
 
-    client.onerror = () => {
-      //setHasError(true);
-    };
-
-    client.onmessage = message => {
-      const dataFromServer = JSON.parse(message.data);
-      if (dataFromServer.type === "counterChange") {
-        setCounter(dataFromServer.data.counter);
-      }
-    };
+    client.on("server response", data => {
+      setCounter(data.counter);
+    });
   });
 
   const onIncrement = () => {
     const newCounter = counter + 1;
     setCounter(newCounter);
-    client.send(JSON.stringify({ type: "counterChange", counter: newCounter }));
+    client.emit("counter change", { counter: newCounter });
     console.log("Incremented");
   };
 
   const onDecrement = () => {
     const newCounter = counter - 1;
     setCounter(newCounter);
-    client.send(JSON.stringify({ type: "counterChange", counter: newCounter }));
+    client.emit("counter change", { counter: newCounter });
     console.log("Decremented");
   };
 
