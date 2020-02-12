@@ -11,22 +11,25 @@
     "@types/react": "^16.9.19",
     "@types/react-dom": "^16.9.5",
     "@types/socket.io-client": "^1.4.32",
+    "babel-plugin-macros": "^2.8.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
+    "react-app-rewired": "^2.1.5",
     "react-dom": "^16.12.0",
-    "react-relay": "^8.0.0",
+    "react-relay": "0.0.0-experimental-5f1cb628",
     "react-scripts": "3.3.1",
+    "relay-runtime": "^8.0.0",
     "socket.io-client": "^2.3.0",
     "typescript": "^3.7.5",
     "websocket": "^1.0.31",
     "ws": "^7.2.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": " react-scripts start",
+    "build": " react-scripts build",
+    "test": " react-scripts test",
     "eject": "react-scripts eject",
-    "relay": "relay-compiler --src ./src/ --schema ./data/schema.graphql --language typescript",
+    "relay": "relay-compiler --src ./src/ --schema ./src/data/schema.graphql --language typescript",
     "relay:watch": "npm relay --watch"
   },
   "eslintConfig": {
@@ -45,9 +48,11 @@
     ]
   },
   "devDependencies": {
+    "@types/babel-plugin-macros": "^2.8.0",
     "@types/react-relay": "^7.0.3",
     "@types/relay-runtime": "^8.0.6",
-    "babel-plugin-relay": "^8.0.0",
+    "babel-plugin-relay": "^2.0.0",
+    "customize-cra": "^0.9.1",
     "eslint": "^6.8.0",
     "eslint-plugin-flowtype": "^4.6.0",
     "fb-watchman": "^2.0.1",

@@ -1,7 +1,11 @@
 import React from 'react'
 
+import { createFragmentContainer, graphql, RelayProp } from 'react-relay'
+import { CounterContainer_count } from './__generated__/CounterContainer_count.graphql'
+
 interface IProps {
-  counter: number
+  relay: RelayProp
+  counter: CounterContainer_count
   onIncrement: Function
   onDecrement: Function
 }
@@ -31,4 +35,10 @@ const CounterContainer: React.FunctionComponent<IProps> = (props) => {
     )
 }
 
-export default CounterContainer
+export default createFragmentContainer(CounterContainer, {
+  count: graphql`
+    fragment CounterContainer_count on Counter {
+      counter
+    }
+  `
+})
