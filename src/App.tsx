@@ -9,6 +9,12 @@ const serverURI =
     ? "http://localhost:3001"
     : "http://192.168.1.191:3001";
 
+
+interface ServerPayload {
+  counter: number
+  _id: string
+}
+
 const client = io.connect(serverURI);
 
 const App = () => {
@@ -18,13 +24,13 @@ const App = () => {
   //const [someCount, setSomeCount] = useState(0);
 
   useEffect(() => {
-    client.on("socket connection", data => {
+    client.on("socket connection", (data: ServerPayload) => {
       console.log("Socket Connected");
       setIsConnected(true);
       setCounter(data.counter);
     });
 
-    client.on("server response", data => {
+    client.on("server response", (data: ServerPayload) => {
       setCounter(data.counter);
     });
   });

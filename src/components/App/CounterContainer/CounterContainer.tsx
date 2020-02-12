@@ -1,6 +1,12 @@
 import React from 'react'
 
-const CounterContainer = (props) => {
+interface IProps {
+  counter: number
+  onIncrement: Function
+  onDecrement: Function
+}
+
+const CounterContainer: React.FunctionComponent<IProps> = (props) => {
 
     const onIncrementHandler = () => {
         props.onIncrement()
