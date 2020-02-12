@@ -1,0 +1,39 @@
+type Counter implements Node {
+  """The ID of an object"""
+  id: ID!
+  counter: Int!
+}
+
+input CounterInputData {
+  counter: Int!
+}
+
+type Mutation {
+  updateCounter(input: UpdateCounterInput!): UpdateCounterPayload
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type Query {
+  counter(id: String): Counter
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+input UpdateCounterInput {
+  counterInput: CounterInputData!
+  clientMutationId: String
+}
+
+type UpdateCounterPayload {
+  newCounter: Counter!
+  clientMutationId: String
+}
