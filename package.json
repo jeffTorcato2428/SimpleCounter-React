@@ -20,6 +20,7 @@
     "babel-loader": "8.0.6",
     "babel-plugin-macros": "^2.8.0",
     "babel-plugin-named-asset-import": "^0.3.6",
+    "babel-plugin-relay": "^8.0.0",
     "babel-preset-react-app": "^9.1.1",
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
@@ -56,7 +57,8 @@
     "react-app-rewired": "^2.1.5",
     "react-dev-utils": "^10.1.0",
     "react-dom": "^16.12.0",
-    "react-relay": "0.0.0-experimental-5f1cb628",
+    "react-relay": "^8.0.0",
+    "reconnecting-websocket": "^4.4.0",
     "relay-runtime": "^8.0.0",
     "resolve": "1.15.0",
     "resolve-url-loader": "3.1.1",
@@ -101,7 +103,6 @@
     "@types/babel-plugin-macros": "^2.8.0",
     "@types/react-relay": "^7.0.3",
     "@types/relay-runtime": "^8.0.6",
-    "babel-plugin-relay": "^2.0.0",
     "customize-cra": "^0.9.1",
     "eslint": "^6.8.0",
     "eslint-plugin-flowtype": "^4.6.0",
@@ -109,7 +110,8 @@
     "graphql": "^14.6.0",
     "relay-compiler": "^8.0.0",
     "relay-compiler-language-typescript": "^10.1.4",
-    "relay-config": "^8.0.0"
+    "relay-config": "^8.0.0",
+    "relay-devtools": "^1.4.0"
   },
   "jest": {
     "roots": [

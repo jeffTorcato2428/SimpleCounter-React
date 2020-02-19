@@ -10,7 +10,9 @@ import {
 
 const fetchQuery = async (
   operation: any,
-  variables: Variables
+  variables: Variables,
+  cacheConfig: CacheConfig,
+  uploadables?: UploadableMap | null
 ) => {
   let response = await fetch("http://127.0.0.1:3001/api/graphql/", {
     method: "POST",
@@ -30,6 +32,7 @@ const fetchQuery = async (
 const network = Network.create(fetchQuery);
 const source = new RecordSource();
 const store = new Store(source);
+
 
 const RelayEnvironment = new Environment({
   network,
