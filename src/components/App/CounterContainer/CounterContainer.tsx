@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   createFragmentContainer,
   graphql,
   RelayProp,
-  commitMutation
+  commitMutation,
+  requestSubscription
 } from "react-relay";
 
 import { CounterContainer_count } from "./__generated__/CounterContainer_count.graphql";
@@ -15,6 +16,8 @@ import {
 } from "./__generated__/CounterContainerMutation.graphql";
 import { Environment } from "relay-runtime/lib/store/RelayStoreTypes";
 import RelayEnvironment from "../../../data/Environment";
+import { GraphQLSubscriptionConfig } from "relay-runtime";
+import { CounterContainerSubscriptionResponse } from "./__generated__/CounterContainerSubscription.graphql";
 
 interface IProps {
   relay: RelayProp;
@@ -27,6 +30,15 @@ const mutation = graphql`
       newCounter {
         counter
       }
+    }
+  }
+`;
+
+const subscriptionQuery = graphql`
+  subscription CounterContainerSubscription {
+    counterChanged {
+      counter
+      id
     }
   }
 `;
@@ -61,6 +73,26 @@ const updateCounter = (
 };
 
 const CounterContainer: React.FunctionComponent<IProps> = props => {
+  useEffect(() => {
+    const subscriptionConfig: GraphQLSubscriptionConfig<CounterContainerSubscriptionResponse> = {
+      subscription: subscriptionQuery,
+      variables: { input: {} },
+      onCompleted: () => {},
+      onError: error => console.error(error),
+      onNext: response => {},
+      updater: (store, data) => {
+        const payload = store.getRootField("counterChanged");
+        const newValue = payload.getValue("counter");
+        const counterStore = store.get(
+          "Q291bnRlcjo1ZTQxM2M3NDFjOWQ0NDAwMDA2NDdkNzg="
+        );
+        counterStore?.setValue(newValue, "counter");
+      }
+    };
+
+    requestSubscription(RelayEnvironment, subscriptionConfig);
+  });
+
   const onIncrementHandler = () => {
     const newCounter = props.count.counter + 1;
     //console.log(newCounter);

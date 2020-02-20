@@ -1,3 +1,9 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: RootSubscription
+}
+
 type Counter implements Node {
   """The ID of an object"""
   id: ID!
@@ -26,6 +32,11 @@ type Query {
     """The ID of an object"""
     id: ID!
   ): Node
+}
+
+"""Root Subscription"""
+type RootSubscription {
+  counterChanged: Counter
 }
 
 input UpdateCounterInput {
