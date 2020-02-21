@@ -6,6 +6,7 @@ import {
   commitMutation,
   requestSubscription
 } from "react-relay";
+import { GraphQLSubscriptionConfig, Environment } from "relay-runtime";
 
 import { CounterContainer_count } from "./__generated__/CounterContainer_count.graphql";
 import {
@@ -14,9 +15,9 @@ import {
   CounterContainerMutation,
   CounterContainerMutationResponse
 } from "./__generated__/CounterContainerMutation.graphql";
-import { Environment } from "relay-runtime/lib/store/RelayStoreTypes";
+
 import RelayEnvironment from "../../../data/Environment";
-import { GraphQLSubscriptionConfig } from "relay-runtime";
+
 import { CounterContainerSubscriptionResponse } from "./__generated__/CounterContainerSubscription.graphql";
 
 interface IProps {
@@ -43,6 +44,7 @@ const subscriptionQuery = graphql`
   }
 `;
 
+// Client Mutation Function to update counter
 const updateCounter = (
   environment: Environment,
   counterInputData: UpdateCounterInput,
@@ -73,6 +75,8 @@ const updateCounter = (
 };
 
 const CounterContainer: React.FunctionComponent<IProps> = props => {
+
+  // Subscribe to counterChange in UseEffect hook
   useEffect(() => {
     const subscriptionConfig: GraphQLSubscriptionConfig<CounterContainerSubscriptionResponse> = {
       subscription: subscriptionQuery,
@@ -83,9 +87,7 @@ const CounterContainer: React.FunctionComponent<IProps> = props => {
       updater: (store, data) => {
         const payload = store.getRootField("counterChanged");
         const newValue = payload.getValue("counter");
-        const counterStore = store.get(
-          "Q291bnRlcjo1ZTQxM2M3NDFjOWQ0NDAwMDA2NDdkNzg="
-        );
+        const counterStore = store.get(props.count.id);
         counterStore?.setValue(newValue, "counter");
       }
     };
@@ -93,9 +95,9 @@ const CounterContainer: React.FunctionComponent<IProps> = props => {
     requestSubscription(RelayEnvironment, subscriptionConfig);
   });
 
+  // Handle onIncrement button press
   const onIncrementHandler = () => {
     const newCounter = props.count.counter + 1;
-    //console.log(newCounter);
     updateCounter(
       RelayEnvironment,
       { counterInput: { counter: newCounter } },
@@ -103,6 +105,7 @@ const CounterContainer: React.FunctionComponent<IProps> = props => {
     );
   };
 
+  //Handle onDecrement button press
   const onDecrementHandler = () => {
     const newCounter = props.count.counter - 1;
     updateCounter(

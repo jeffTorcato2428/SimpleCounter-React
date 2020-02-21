@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-//import io from "socket.io-client";
+import React from "react";
 import {
   QueryRenderer,
   graphql
 } from "react-relay";
+
 import "./App.css";
 import CounterContainer from "./components/App/CounterContainer/CounterContainer";
 import ErrorOverlay from "./components/App/ErrorOverlay/ErrorOverlay";
@@ -23,39 +23,6 @@ const variables = {
 };
 
 const App = () => {
-  const [counter, setCounter] = useState(0);
-  //const [hasError, setHasError] = useState(false);
-  //const [isConnected, setIsConnected] = useState(true);
-  //const [someCount, setSomeCount] = useState(0);
-
-  // useEffect(() => {
-  //   client.on("socket connection", (data: ServerPayload) => {
-  //     console.log("Socket Connected");
-  //     setIsConnected(true);
-  //     setCounter(data.counter);
-  //   });
-
-  //   client.on("server response", (data: ServerPayload) => {
-  //     setCounter(data.counter);
-  //   });
-  // });
-
-  // const onIncrement = () => {
-  //   const newCounter = counter + 1;
-  //   setCounter(newCounter);
-  //   console.log("[New Counter]", newCounter)
-  //   //client.emit("counter change", { counter: newCounter });
-  //   //updateCounter(RelayEnvironment, { counterInput: { counter: newCounter } });
-  //   console.log("Incremented");
-  // };
-
-  // const onDecrement = () => {
-  //   const newCounter = counter - 1;
-  //   setCounter(newCounter);
-  //   //client.emit("counter change", { counter: newCounter });
-  //   //updateCounter(RelayEnvironment, { counterInput: { counter: newCounter } });
-  //   console.log("Decremented");
-  // };
 
   return (
     <div className="App">

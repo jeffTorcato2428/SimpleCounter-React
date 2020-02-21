@@ -8,15 +8,13 @@ import { SubscriptionClient } from "subscriptions-transport-ws";
 import { execute } from "apollo-link";
 import { WebSocketLink } from "apollo-link-ws";
 
-const webSocketURL = "ws://localhost:3001/subscriptions";
-
 const fetchQuery = async (
   operation,
   variables,
   cacheConfig,
   uploadables
 ) => {
-  let response = await fetch("http://127.0.0.1:3001/api/graphql/", {
+  let response = await fetch(process.env.API_LINK, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -31,7 +29,7 @@ const fetchQuery = async (
   return await response.json();
 };
 
-const subscriptionClient = new SubscriptionClient(webSocketURL, {
+const subscriptionClient = new SubscriptionClient(process.env.WEBSOCKET_LINK, {
   reconnect: true
 });
 
